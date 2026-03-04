@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from "react";
 import './index.css';
 
-const CATEGORIES = ["Tops", "Bottoms", "Dresses", "Outerwear", "Shoes", "Accessories", "Bags"];
+const CATEGORIES = ["Tops", "Bottoms", "Dresses", "Shoes", "Accessories", "Bags"];
 const OUTFIT_SLOTS = ["Tops", "Bottoms", "Shoes", "Outerwear", "Accessories"];
 
 async function loadItems() { try { const r = await window.storage.get("closet-items"); return r ? JSON.parse(r.value) : []; } catch { return []; } }
@@ -136,7 +136,7 @@ export default function App() {
       {modal && <UploadModal onAdd={addItem} onClose={() => setModal(false)} />}
 
       <header className="header">
-        <div className="logo">WARDROBE<span>Your Digital Closet</span></div>
+        <div className="logo">WARDROBE<span>Makes life easier :)</span></div>
         <div className="header-right">
           <span className="header-stats">{items.length} pieces · {outfits.length} looks</span>
           <button className="btn-add" onClick={() => setModal(true)}>+ Add Piece</button>
@@ -145,7 +145,7 @@ export default function App() {
 
       <nav className="tabs">
         <button className={`tab${view === "closet" ? " active" : ""}`} onClick={() => setView("closet")}>Wardrobe</button>
-        <button className={`tab${view === "outfits" ? " active" : ""}`} onClick={() => setView("outfits")}>Saved Looks</button>
+        <button className={`tab${view === "outfits" ? " active" : ""}`} onClick={() => setView("outfits")}>Saved Outfits</button>
       </nav>
 
       <div className="main">
@@ -166,8 +166,8 @@ export default function App() {
               {filtered.length === 0 ? (
                 <div className="empty">
                   <div className="empty-blob" />
-                  <h2 className="empty-h">{items.length === 0 ? "Your Wardrobe Awaits" : "Nothing Here"}</h2>
-                  <p className="empty-p">{items.length === 0 ? "Upload your first clothing piece to begin." : "Try a different category."}</p>
+                  <h2 className="empty-h">{items.length === 0 ? "Oh no, nothing to see here" : "Nothing Here"}</h2>
+                  <p className="empty-p">{items.length === 0 ? "Upload your first clothing piece!" : "Add some itemsgit."}</p>
                   {items.length === 0 && <button className="btn-cta" onClick={() => setModal(true)}>+ Add First Piece</button>}
                 </div>
               ) : (
