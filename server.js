@@ -7,7 +7,7 @@ const app = express();
 app.use(cors({
   origin: ["https://closet-app-pi.vercel.app", "http://localhost:3000"]
 }));
-app.options("*", cors());
+app.options("/(.*)", cors());
 app.use(express.json({ limit: "50mb" })); // large limit for base64 images
 
 mongoose.connect(process.env.MONGO_URI)
