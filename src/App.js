@@ -4,11 +4,20 @@ import './index.css';
 const CATEGORIES = ["Tops", "Bottoms", "Dresses", "Shoes", "Accessories", "Bags"];
 const OUTFIT_SLOTS = ["Tops", "Bottoms", "Shoes", "Outerwear", "Accessories"];
 
-async function loadItems() { try { const r = await window.storage.get("closet-items"); return r ? JSON.parse(r.value) : []; } catch { return []; } }
-async function saveItems(items) { try { await window.storage.set("closet-items", JSON.stringify(items)); } catch {} }
-async function loadOutfits() { try { const r = await window.storage.get("closet-outfits"); return r ? JSON.parse(r.value) : []; } catch { return []; } }
-async function saveOutfits(outfits) { try { await window.storage.set("closet-outfits", JSON.stringify(outfits)); } catch {} }
+const API = "closetapp-production-3450.up.railway.app";
 
+async function loadItems() {
+  try { const r = await fetch(`${API}/items`); return r.json(); } catch { return []; }
+}
+async function saveItems(items) {
+  try { await fetch(`${API}/items`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(items) }); } catch {}
+}
+async function loadOutfits() {
+  try { const r = await fetch(`${API}/outfits`); return r.json(); } catch { return []; }
+}
+async function saveOutfits(outfits) {
+  try { await fetch(`${API}/outfits`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(outfits) }); } catch {}
+}
 function UploadModal({ onAdd, onClose }) {
   const [image, setImage] = useState(null);
   const [name, setName] = useState("");
