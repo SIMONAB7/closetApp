@@ -4,7 +4,7 @@ import './index.css';
 const CATEGORIES = ["Tops", "Bottoms", "Dresses", "Shoes", "Accessories", "Bags"];
 const OUTFIT_SLOTS = ["Tops", "Bottoms", "Shoes", "Outerwear", "Accessories"];
 
-const API = "closetapp-production-3450.up.railway.app";
+const API = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
 
 async function loadItems() {
   try { const r = await fetch(`${API}/items`); return r.json(); } catch { return []; }
