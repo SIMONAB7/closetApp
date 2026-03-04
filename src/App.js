@@ -7,14 +7,24 @@ const OUTFIT_SLOTS = ["Tops", "Bottoms", "Shoes", "Outerwear", "Accessories"];
 const API = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
 
 async function loadItems() {
-  try { const r = await fetch(`${API}/items`); return r.json(); } catch { return []; }
+  try {
+    const r = await fetch(`${API}/items`);
+    const data = await r.json();
+    return Array.isArray(data) ? data : [];
+  } catch { return []; }
+}
+
+async function loadOutfits() {
+  try {
+    const r = await fetch(`${API}/outfits`);
+    const data = await r.json();
+    return Array.isArray(data) ? data : [];
+  } catch { return []; }
 }
 async function saveItems(items) {
   try { await fetch(`${API}/items`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(items) }); } catch {}
 }
-async function loadOutfits() {
-  try { const r = await fetch(`${API}/outfits`); return r.json(); } catch { return []; }
-}
+
 async function saveOutfits(outfits) {
   try { await fetch(`${API}/outfits`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(outfits) }); } catch {}
 }

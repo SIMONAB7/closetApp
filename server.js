@@ -21,8 +21,12 @@ const Wardrobe = mongoose.model("Wardrobe", wardrobeSchema);
 
 // Get items or outfits
 app.get("/api/:key", async (req, res) => {
-  const doc = await Wardrobe.findOne({ key: req.params.key });
-  res.json(doc ? doc.data : []);
+  try {
+    const doc = await Wardrobe.findOne({ key: req.params.key });
+    res.json(doc ? doc.data : []);
+  } catch (err) {
+    res.json([]);
+  }
 });
 
 // Save items or outfits
