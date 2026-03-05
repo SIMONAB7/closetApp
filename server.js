@@ -17,30 +17,36 @@ mongoose.connect(process.env.MONGO_URI)
 
 const wardrobeSchema = new mongoose.Schema({
   key: String,
-  data: mongoose.Schema.Types.Mixed,
-});
+  data: { type: mongoose.Schema.Types.Mixed, default: [] },
+}, { strict: false });
 const Wardrobe = mongoose.model("Wardrobe", wardrobeSchema);
 
 // Get items or outfits
 app.get("/api/:key", async (req, res) => {
   try {
     const doc = await Wardrobe.findOne({ key: req.params.key });
+    console.log("GET", req.params.key, doc ? doc.data.length : "not found");
     res.json(doc ? doc.data : []);
   } catch (err) {
+    console.log("GET error:", err.message);
     res.json([]);
   }
 });
 
-// Save items or outfits
 app.post("/api/:key", async (req, res) => {
-  await Wardrobe.findOneAndUpdate(
-    { key: req.params.key },
-    { data: req.body },
-    { upsert: true }
-  );
-  res.json({ ok: true });
+  try {
+    await Wardrobe.findOneAndUpdate(
+      { key: req.params.key },
+      { data: req.body },
+      { upsert: true, new: true }
+    );
+    console.log("POST", req.params.key, req.body.length, "items");
+    res.json({ ok: true });
+  } catch (err) {
+    console.log("POST error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
-
 // keep-alive ping
 setInterval(() => {
   fetch(`https://closetapp-production-3450.up.railway.app/api/ping`)
