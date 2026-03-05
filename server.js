@@ -41,4 +41,12 @@ app.post("/api/:key", async (req, res) => {
   res.json({ ok: true });
 });
 
+// keep-alive ping
+setInterval(() => {
+  fetch(`https://closetapp-production-3450.up.railway.app/api/ping`)
+    .catch(() => {});
+}, 5 * 60 * 1000); // ping every 5 minutes
+
+app.get("/api/ping", (req, res) => res.json({ ok: true }));
+
 app.listen(process.env.PORT || 5001, () => console.log("Server running"));

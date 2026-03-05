@@ -141,7 +141,14 @@ export default function App() {
   const [filter, setFilter] = useState("All");
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => { (async () => { const [i, o] = await Promise.all([loadItems(), loadOutfits()]); setItems(i); setOutfits(o); setLoading(false); })(); }, []);
+  useEffect(() => {
+  (async () => {
+    // give Railway a moment to wake if sleeping
+    await new Promise(r => setTimeout(r, 1000));
+    const [i, o] = await Promise.all([loadItems(), loadOutfits()]);
+    setItems(i); setOutfits(o); setLoading(false);
+  })();
+}, []);
   const addItem = async (item) => { const n = [item, ...items]; setItems(n); await saveItems(n); };
   const delItem = async (id) => { const n = items.filter(i => i.id !== id); setItems(n); await saveItems(n); };
   const saveOutfit = async (o) => { const n = [o, ...outfits]; setOutfits(n); await saveOutfits(n); };
