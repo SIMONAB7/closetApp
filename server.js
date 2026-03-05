@@ -11,9 +11,13 @@ app.use(cors({
 }));
 app.use(express.json({ limit: "50mb" }));
 
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.log("MongoDB error:", err));
+mongoose.connect(process.env.MONGO_URI, {
+  serverSelectionTimeoutMS: 30000,
+  socketTimeoutMS: 45000,
+  connectTimeoutMS: 30000,
+})
+.then(() => console.log("MongoDB connected"))
+.catch(err => console.log("MongoDB error:", err.message));
 
 const wardrobeSchema = new mongoose.Schema({
   key: String,
